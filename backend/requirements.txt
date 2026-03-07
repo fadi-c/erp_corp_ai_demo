@@ -1,0 +1,11 @@
+Django==4.2
+django-ninja
+pydantic
+psycopg2-binary
+celery
+redis
+openai
+pgvector
+prometheus-client
+python-dotenv
+pydantic[email]

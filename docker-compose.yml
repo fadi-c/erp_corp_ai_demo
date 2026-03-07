@@ -1,0 +1,64 @@
+services:
+
+  postgres:
+    image: pgvector/pgvector:pg15
+    environment:
+      POSTGRES_DB: erp
+      POSTGRES_USER: erp
+      POSTGRES_PASSWORD: erp
+    ports:
+      - "5432:5432"
+    networks:
+      - erp_corp_net
+  redis:
+    image: redis:7
+    networks:
+      - erp_corp_net
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+    networks:
+      - erp_corp_net
+  worker:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: celery -A core worker -l info
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - redis
+      - postgres
+    env_file:
+      - .env
+    networks:
+      - erp_corp_net
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - erp_corp_net
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+
+    networks:
+      - erp_corp_net
+networks:
+  erp_corp_net:
+    driver: bridge

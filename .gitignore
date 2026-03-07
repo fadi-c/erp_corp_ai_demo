@@ -1,0 +1,116 @@
+# ---------------------------
+# Python / Django
+# ---------------------------
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.swp
+*.swo
+*.egg-info/
+*.egg
+*.cover
+*.log
+*.pot
+*.py[cod]
+*.so
+*.sqlite3
+*.gitconfig
+# Django specific
+*.db
+db.sqlite3
+media/
+staticfiles/
+.env
+.env.*
+.python-deps/
+static_src/
+
+# ---------------------------
+# Docker
+# ---------------------------
+# Docker containers, volumes, logs
+docker-compose.override.yml
+docker-compose.override.*.yml
+**/docker-compose.override.yml
+**/docker-compose.override.*.yml
+
+# Docker volumes
+volumes/
+tmp/
+**/__pycache__/
+
+# Ignore built images
+*.tar
+*.log
+
+# ---------------------------
+# IDE / Editor
+# ---------------------------
+.vscode/
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.nfs*
+
+# ---------------------------
+# Virtualenv / Env
+# ---------------------------
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+*.env
+.venv/
+pip-log.txt
+
+# ---------------------------
+# Celery / Django Logs
+# ---------------------------
+celerybeat-schedule
+celerybeat.pid
+*.pid
+*.seed
+
+# ---------------------------
+# Coverage / Test output
+# ---------------------------
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+pytest_cache/
+
+# ---------------------------
+# Static / Media (if collected)
+# ---------------------------
+static/
+media/
+
+# ---------------------------
+# Misc
+# ---------------------------
+*.bak
+*.tmp
+*.swp
+*.swo
