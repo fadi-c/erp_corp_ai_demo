@@ -1,4 +1,3 @@
-# backend/ai/llm/groq_client.py
 import os
 from openai import OpenAI
 from .base import BaseLLM

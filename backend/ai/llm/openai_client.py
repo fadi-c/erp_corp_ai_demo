@@ -1,4 +1,3 @@
-# backend/core/llm/openai_client.py
 import os
 from openai import OpenAI
 from .base import BaseLLM

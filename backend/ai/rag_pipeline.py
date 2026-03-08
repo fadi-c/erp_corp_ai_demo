@@ -11,19 +11,28 @@ class RagPipeline:
         context_parts = []
 
         for item in results:
-
             invoice = item.invoice
+            customer = invoice.customer
+            orders = getattr(invoice, "prefetched_orders", [])
+
+            orders_str = "\n".join([
+                f"- {o.product.name} ({o.product.category}): {o.quantity} units @ {o.price} EUR"
+                for o in orders
+            ]) or "No orders linked"
 
             context_parts.append(
                 f"""
-                Invoice {invoice.id}
-                Description: {invoice.description}
-                Amount: {invoice.amount}
-                Margin: {invoice.margin}
-                Date: {invoice.date}
-                """
+Invoice ID: {invoice.id}
+Customer: {customer.name} ({customer.industry})
+Description: {invoice.description}
+Financial data:
+- Amount: {invoice.amount} EUR
+- Margin: {invoice.margin} EUR
+Invoice date: {invoice.date}
+Orders:
+{orders_str}
+"""
             )
 
         context = "\n".join(context_parts)
-
         return context, results

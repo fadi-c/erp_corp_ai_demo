@@ -21,7 +21,7 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-
+    invoice = models.ForeignKey("Invoice", on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price = models.FloatField()
