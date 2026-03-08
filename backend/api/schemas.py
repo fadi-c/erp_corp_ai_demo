@@ -5,7 +5,7 @@ from pydantic import BaseModel, EmailStr
 
 
 class QuestionRequest(Schema):
-    from_user: EmailStr
+    #from_user: EmailStr
     question: str
 
 

@@ -1,21 +1,16 @@
 import os
 from openai import OpenAI
+from .base import BaseEmbedding
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-
-class EmbeddingService:
+class OpenAIEmbedding(BaseEmbedding):
 
     MODEL = "text-embedding-3-small"
 
-    @staticmethod
-    def generate(text: str):
-
+    def generate(self, text: str):
         response = client.embeddings.create(
-            model=EmbeddingService.MODEL,
+            model=self.MODEL,
             input=text
         )
-
         return response.data[0].embedding

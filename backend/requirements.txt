@@ -9,3 +9,5 @@ pgvector
 prometheus-client
 python-dotenv
 pydantic[email]
+factory_boy
+faker

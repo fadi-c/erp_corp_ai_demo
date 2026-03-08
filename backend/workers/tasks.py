@@ -1,6 +1,6 @@
 from celery import shared_task
 from erp.models import Invoice, InvoiceEmbedding
-from ai.embeddings import EmbeddingService
+from ai.embeddings.factory import EmbeddingFactory
 
 
 @shared_task
@@ -14,7 +14,7 @@ def generate_invoice_embedding(invoice_id: int):
     Margin: {invoice.margin}
     """
 
-    embedding = EmbeddingService.generate(text)
+    embedding = EmbeddingFactory.get_embedding_service().generate(text)
 
     InvoiceEmbedding.objects.update_or_create(
         invoice=invoice,

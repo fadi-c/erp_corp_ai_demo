@@ -72,3 +72,7 @@ CELERY_TASK_SERIALIZER = "json"
 
 # Default primary key
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# LLM factory 
+AI_LLM = os.getenv("AI_LLM", "FAKE")
+AI_EMBEDDINGS = os.getenv("AI_EMBEDDINGS", "FAKE")
