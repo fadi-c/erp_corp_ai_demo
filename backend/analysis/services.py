@@ -1,6 +1,6 @@
 from ai.llm.factory import LLMFactory
 from analysis.hybrid_retrieval import HybridRetrieval
-
+from erp.models import Invoice
 
 class AnalysisService:
 
@@ -9,9 +9,16 @@ class AnalysisService:
         route, results, context = HybridRetrieval.retrieve(question)
 
         if route == "sql":
-            sql_context = "\n".join([f"{r['month']}: {r['count']} invoices" for r in results])
+            sql_context = "\n".join([f"{r['month'].strftime('%Y-%m')}: {r['count']} invoices" for r in results])
             answer = LLMFactory.get_llm().ask(question, sql_context)
-            return answer, []
+
+            months = [r['month'].month for r in results]
+            invoice_ids = list(
+                Invoice.objects.filter(date__month__in=months).values_list('id', flat=True)
+            )
+
+            return answer, invoice_ids
+
 
         if route == "keyword":
             keyword_context = "\n".join([f"Invoice {i.id}: {i.description}" for i in results])

@@ -13,8 +13,7 @@ class RagPipeline:
         for item in results:
             invoice = item.invoice
             customer = invoice.customer
-            orders = getattr(invoice, "prefetched_orders", [])
-
+            orders = invoice.order_set.all() 
             orders_str = "\n".join([
                 f"- {o.product.name} ({o.product.category}): {o.quantity} units @ {o.price} EUR"
                 for o in orders
