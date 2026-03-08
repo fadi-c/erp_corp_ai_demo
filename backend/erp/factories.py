@@ -1,4 +1,3 @@
-# backend/erp/factories.py
 import random
 import factory
 from faker import Faker
@@ -44,10 +43,3 @@ class InvoiceFactory(factory.django.DjangoModelFactory):
     date = factory.LazyAttribute(lambda _: fake.date_between(start_date='-1y', end_date='today'))
     description = factory.LazyAttribute(lambda o: f"Invoice for {o.customer.name}")
 
-
-class InvoiceEmbeddingFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = InvoiceEmbedding
-
-    invoice = factory.SubFactory(InvoiceFactory)
-    embedding = factory.LazyAttribute(lambda _: [random.random() for _ in range(1536)])

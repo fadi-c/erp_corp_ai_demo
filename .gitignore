@@ -99,6 +99,7 @@ nosetests.xml
 coverage.xml
 *.cover
 *.log
+code.txt
 pytest_cache/
 
 # ---------------------------

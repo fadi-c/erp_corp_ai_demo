@@ -1,9 +1,12 @@
-# backend/core/llm/factory.py
+
 import os
 from django.conf import settings
 from .openai_client import OpenAILLM
+from .groq_client import GroqLLM
 from .dev_client import DevLLM
 from .base import BaseLLM
+
+
 class LLMFactory:
 
     @staticmethod
@@ -12,5 +15,8 @@ class LLMFactory:
 
         if llm_env == "OPENAI":
             return OpenAILLM()
-        else:
-            return DevLLM()
+
+        if llm_env == "GROQ":
+            return GroqLLM()
+
+        return DevLLM()

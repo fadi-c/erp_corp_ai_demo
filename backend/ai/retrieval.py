@@ -7,7 +7,7 @@ from ai.embeddings.factory import EmbeddingFactory
 class RetrievalService:
 
     @staticmethod
-    def search(question: str, limit: int = 5) -> List[InvoiceEmbedding]:
+    def search(question: str, limit: int = 30) -> List[InvoiceEmbedding]:
 
         question_embedding = EmbeddingFactory.get_embedding_service().generate(question)
 

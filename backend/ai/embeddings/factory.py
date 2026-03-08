@@ -2,6 +2,7 @@ from django.conf import settings
 from .openai_client import OpenAIEmbedding
 from .dev_client import DevEmbedding
 from .base import BaseEmbedding
+from .local_client import LocalEmbedding
 
 class EmbeddingFactory:
 
@@ -10,4 +11,6 @@ class EmbeddingFactory:
         env = getattr(settings, "AI_EMBEDDINGS", "FAKE").upper()
         if env == "OPENAI":
             return OpenAIEmbedding()
+        elif env == "LOCAL":
+            return LocalEmbedding()        
         return DevEmbedding()

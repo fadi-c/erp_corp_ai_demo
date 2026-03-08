@@ -16,6 +16,7 @@ services:
       - erp_corp_net
 
   backend:
+    command: python manage.py runserver 0.0.0.0:8000
     build:
       context: .
       dockerfile: docker/Dockerfile
@@ -44,6 +45,20 @@ services:
       - .env
     networks:
       - erp_corp_net
+  celery-beat:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: celery -A core beat -l info
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - redis
+      - postgres
+    env_file:
+      - .env
+    networks:
+      - erp_corp_net      
   prometheus:
     image: prom/prometheus
     volumes:
@@ -59,6 +74,16 @@ services:
 
     networks:
       - erp_corp_net
+
+  embedding:
+    build:
+      context: .
+      dockerfile: local_embedding/Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - erp_corp_net
+
 networks:
   erp_corp_net:
     driver: bridge
