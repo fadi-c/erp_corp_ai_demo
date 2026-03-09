@@ -1,8 +1,7 @@
 from ninja import Schema
 from typing import List
 from datetime import date
-from pydantic import BaseModel, EmailStr
-
+from pydantic import ConfigDict
 
 class QuestionRequest(Schema):
     question: str
@@ -19,5 +18,4 @@ class InvoiceSchema(Schema):
     margin: float
     date: date
     description: str
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
