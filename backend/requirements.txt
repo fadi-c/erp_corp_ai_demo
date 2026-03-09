@@ -13,3 +13,4 @@ factory_boy
 faker
 requests
 django-cors-headers
+django-prometheus

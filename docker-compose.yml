@@ -1,3 +1,4 @@
+
 services:
 
   postgres:
@@ -10,32 +11,31 @@ services:
       - "5432:5432"
     networks:
       - erp_corp_net
+
   redis:
     image: redis:7
     networks:
       - erp_corp_net
 
   backend:
-    command: python manage.py runserver 0.0.0.0:8000
     build:
       context: .
       dockerfile: docker/Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend:/app
     ports:
       - "8000:8000"
-    depends_on:
-      - postgres
-      - redis
     env_file:
       - .env
     networks:
       - erp_corp_net
+
   worker:
+    command: python /app/workers/entrypoint.py
     build:
       context: .
-      dockerfile: docker/Dockerfile
-    command: celery -A core worker -l info
+      dockerfile: docker/Dockerfile.celery
     volumes:
       - ./backend:/app
     depends_on:
@@ -45,11 +45,14 @@ services:
       - .env
     networks:
       - erp_corp_net
+    ports:
+      - "5555:5555" 
+
   celery-beat:
     build:
       context: .
-      dockerfile: docker/Dockerfile
-    command: celery -A core beat -l info
+      dockerfile: docker/Dockerfile.celery
+    command: python /app/workers/beat_entrypoint.py
     volumes:
       - ./backend:/app
     depends_on:
@@ -58,7 +61,10 @@ services:
     env_file:
       - .env
     networks:
-      - erp_corp_net      
+      - erp_corp_net
+    ports:
+      - "5556:5556"
+
   prometheus:
     image: prom/prometheus
     volumes:
@@ -67,12 +73,18 @@ services:
       - "9090:9090"
     networks:
       - erp_corp_net
+
   grafana:
     image: grafana/grafana
     ports:
       - "3000:3000"
     networks:
       - erp_corp_net
+    env_file:
+      - .env
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
 
   embedding:
     build:
@@ -87,15 +99,15 @@ services:
     build:
       context: .
       dockerfile: ./frontend/Dockerfile
-    ports:
-      - "5173:5173"
     volumes:
       - ./frontend:/app 
       - ./.node_modules:/home/node/.node_modules
+    ports:
+      - "5173:5173"
     environment:
-      - VITE_API_URL=http://localhost:8000/api
-      - VITE_GRAFANA_URL=https://localhost:3000/
-      - VITE_GITHUB_URL=https://github.com/fadi-c/erp_corp_ai_demo
+      - VITE_API_URL="http://localhost:8000/api"
+      - VITE_GRAFANA_URL="http://localhost:3000/"
+      - VITE_GITHUB_URL="https://github.com"
     command: npm run dev -- --host
     networks:
       - erp_corp_net
