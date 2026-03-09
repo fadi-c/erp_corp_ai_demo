@@ -23,9 +23,10 @@ export default function DashboardLayout() {
   ]
 
   return (
-    <div className="flex h-screen bg-[#0f172a] text-white">
-      <aside className="flex flex-col w-96 md:w-[420px] bg-[#0a101f] shadow-lg rounded-tr-3xl rounded-br-3xl overflow-hidden h-screen">
-        <nav className="flex flex-col justify-center mt-6 gap-6 flex-1 overflow-auto px-6">
+    <div className="flex flex-col h-screen bg-[#0f172a] text-white relative">
+      {/* Navbar flottante */}
+      <header className="fixed top-0 left-0 w-full bg-[#0a101f] shadow-md z-50 pointer-events-auto">
+        <nav className="container mx-auto flex flex-wrap justify-center md:justify-center items-center gap-4 py-4 px-6">
           {nav.map((item) => {
             const isActive = !item.external && location.pathname === item.to
             const Icon = item.icon
@@ -36,34 +37,33 @@ export default function DashboardLayout() {
                 href={item.to}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-start gap-1 pl-4 pr-6 py-3 rounded-3xl transition-all duration-200 hover:bg-[#121a2b] hover:text-indigo-400"
+                className="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 hover:bg-[#121a2b] hover:text-indigo-400"
               >
-                <div className="flex items-center gap-3">
-                  <Icon size={22} className="text-indigo-300 transition-colors" />
-                  <span className="font-medium text-indigo-200">{item.label}</span>
-                </div>
-                {item.credentials && (
-                  <span className="text-xs text-indigo-400 ml-9">{item.credentials}</span>
-                )}
+                <Icon size={20} className="text-indigo-300" />
+                <span className="text-indigo-200 font-medium text-sm">{item.label}</span>
               </a>
             ) : (
               <Link
                 key={item.label}
                 to={item.to}
-                className={`flex items-center gap-4 pl-4 pr-6 py-4 rounded-3xl transition-all duration-200 ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 text-sm font-medium ${
                   isActive ? "bg-indigo-500 text-white shadow-md scale-105" : "text-indigo-200 hover:text-indigo-400 hover:bg-[#121a2b]"
                 }`}
               >
-                <Icon size={22} />
-                <span className="font-medium">{item.label}</span>
+                <Icon size={20} />
+                <span>{item.label}</span>
               </Link>
             )
           })}
         </nav>
-      </aside>
+      </header>
 
-      <main className="flex-1 flex flex-col overflow-hidden px-12 py-8">
-        <Outlet />
+      {/* Main content qui défile sous la navbar */}
+      <main className="flex-1 flex flex-col overflow-hidden relative pt-20 p-6 md:p-12">
+        {/* Outlet scrollable */}
+        <div className="flex-1 overflow-auto">
+          <Outlet />
+        </div>
       </main>
     </div>
   )

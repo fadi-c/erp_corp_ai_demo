@@ -182,3 +182,4 @@ vitest.config.ts
 out/
 dist/
 .node_modules/
+.local_embedding/

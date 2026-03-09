@@ -5,8 +5,7 @@ class InvoiceRepository:
 
     @staticmethod
     def list_invoices():
-
-        return Invoice.objects.all()
+        return Invoice.objects.all().order_by("-date")
 
 
     @staticmethod

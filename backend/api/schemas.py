@@ -13,11 +13,11 @@ class QuestionResponse(Schema):
     sources: List[int]
 
 
-
-
 class InvoiceSchema(Schema):
     id: int
     amount: float
     margin: float
     date: date
     description: str
+    class Config:
+        orm_mode = True
