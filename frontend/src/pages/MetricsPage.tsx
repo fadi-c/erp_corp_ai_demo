@@ -65,7 +65,7 @@ export default function MetricsPage() {
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-[#9aa4b2]">ID</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-[#9aa4b2]">Date</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-[#9aa4b2]">Customer</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-[#9aa4b2]">Description</th>
                   <th className="px-6 py-3 text-right text-sm font-semibold text-[#9aa4b2]">Amount (€)</th>
                   <th className="px-6 py-3 text-right text-sm font-semibold text-[#9aa4b2]">Margin (€)</th>
                 </tr>
