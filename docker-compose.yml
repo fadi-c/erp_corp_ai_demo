@@ -107,7 +107,7 @@ services:
     environment:
       - VITE_API_URL=http://localhost:8000/api
       - VITE_GRAFANA_URL=http://localhost:3000/
-      - VITE_GITHUB_URL=https://github.com
+      - VITE_GITHUB_URL=https://github.com/fadi-c/erp_corp_ai_demo
     command: npm run dev -- --host
     networks:
       - erp_corp_net
