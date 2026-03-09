@@ -1,49 +1,46 @@
 
 # ERP AI Backend
-
 ```mermaid
 flowchart TD
     %% Client
-    Client[Client / Frontend] -->|HTTP Request| API[API (Django Ninja)]
+    Client["Client / Frontend"] -->|HTTP Request| API["API (Django Ninja)"]
     
     %% API endpoints
-    API -->|/health| Health[Health Endpoint]
-    API -->|/question| Question[Question Endpoint]
-    API -->|/invoices| Invoices[Invoices Endpoint]
+    API -->|/health| Health["Health Endpoint"]
+    API -->|/question| Question["Question Endpoint"]
+    API -->|/invoices| Invoices["Invoices Endpoint"]
     
     %% Question pipeline
-    Question --> HybridRetrieval[HybridRetrieval]
-    HybridRetrieval -->|SQL route| SQLAnalytics[SQLAnalyticsService]
-    HybridRetrieval -->|Keyword route| KeywordSearch[KeywordSearch]
-    HybridRetrieval -->|Vector route| RAGPipeline[RAG Pipeline]
+    Question --> HybridRetrieval["HybridRetrieval"]
+    HybridRetrieval -->|SQL route| SQLAnalytics["SQLAnalyticsService"]
+    HybridRetrieval -->|Keyword route| KeywordSearch["KeywordSearch"]
+    HybridRetrieval -->|Vector route| RAGPipeline["RAG Pipeline"]
     
     %% RAG pipeline
-    RAGPipeline --> RetrievalService[RetrievalService]
-    RetrievalService -->|Query nearest embeddings| InvoiceEmbeddingDB[InvoiceEmbedding (pgvector)]
-    InvoiceEmbeddingDB -->|Prefetch orders| Orders[Order & Product data]
-    RetrievalService --> Context[Build context for LLM]
+    RAGPipeline --> RetrievalService["RetrievalService"]
+    RetrievalService -->|Query nearest embeddings| InvoiceEmbeddingDB["InvoiceEmbedding (pgvector)"]
+    InvoiceEmbeddingDB -->|Prefetch orders| Orders["Order & Product data"]
+    RetrievalService --> Context["Build context for LLM"]
     
     %% LLM processing
-    Context --> LLMFactory[LLMFactory]
-    LLMFactory --> LLMModel[BaseLLM / OpenAI / Groq / Dev]
-    LLMModel --> Answer[AI Answer returned to Client]
+    Context --> LLMFactory["LLMFactory"]
+    LLMFactory --> LLMModel["BaseLLM / OpenAI / Groq / Dev"]
+    LLMModel --> Answer["AI Answer returned to Client"]
     
     %% Async embedding pipeline
-    Invoice[Invoice created] -->|post_save signal| CeleryTask[Celery Task: generate_invoice_embedding]
+    Invoice["Invoice created"] -->|post_save signal| CeleryTask["Celery Task: generate_invoice_embedding"]
     CeleryTask --> InvoiceEmbeddingDB
-    CeleryBeat[Celery Beat: generate_missing_invoice_embeddings every 5 min] --> CeleryTask
+    CeleryBeat["Celery Beat: generate_missing_invoice_embeddings every 5 min"] --> CeleryTask
     
     %% Observability
-    API -->|metrics| Prometheus[Prometheus Metrics Server 5555]
+    API -->|metrics| Prometheus["Prometheus Metrics Server 5555"]
     CeleryTask -->|metrics| Prometheus
     CeleryBeat -->|metrics| Prometheus
     
     %% Data seeding
-    SeedData[Management Command: seed_data] -->|Generate Customers, Products, Orders, Invoices| ERPDB[PostgreSQL]
+    SeedData["Management Command: seed_data"] -->|Generate Customers, Products, Orders, Invoices| ERPDB["PostgreSQL"]
     SeedData -->|Generate Embeddings| InvoiceEmbeddingDB
 ```
-
-A modern ERP backend with **AI-powered invoice analytics**, semantic search, embedding generation, and full observability.
 
 ---
 
