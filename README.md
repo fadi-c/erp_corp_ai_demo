@@ -1,6 +1,7 @@
 
 # ERP AI Backend
 
+```mermaid
 flowchart TD
     %% Client
     Client[Client / Frontend] -->|HTTP Request| API[API (Django Ninja)]
@@ -40,6 +41,7 @@ flowchart TD
     %% Data seeding
     SeedData[Management Command: seed_data] -->|Generate Customers, Products, Orders, Invoices| ERPDB[PostgreSQL]
     SeedData -->|Generate Embeddings| InvoiceEmbeddingDB
+```
 
 A modern ERP backend with **AI-powered invoice analytics**, semantic search, embedding generation, and full observability.
 
@@ -285,13 +287,3 @@ python manage.py seed_data
 * Hybrid retrieval (SQL / keyword / vector)
 * Factory pattern for LLM & embeddings (swap OpenAI / Groq / Dev / Local)
 * Full Prometheus monitoring
-
----
-
-## Future Improvements
-
-* Streaming LLM responses
-* Embedding caching for faster vector search
-* Multi-document retrieval for broader context
-* Advanced dashboards for monitoring
-
