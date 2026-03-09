@@ -12,3 +12,4 @@ pydantic[email]
 factory_boy
 faker
 requests
+django-cors-headers

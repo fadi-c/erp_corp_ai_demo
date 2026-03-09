@@ -71,7 +71,6 @@ services:
     image: grafana/grafana
     ports:
       - "3000:3000"
-
     networks:
       - erp_corp_net
 
@@ -81,6 +80,23 @@ services:
       dockerfile: local_embedding/Dockerfile
     ports:
       - "5000:5000"
+    networks:
+      - erp_corp_net
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app 
+      - ./.node_modules:/home/node/.node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+      - VITE_GRAFANA_URL=https://localhost:3000/
+      - VITE_GITHUB_URL=https://github.com/fadi-c/erp_corp_ai_demo
+    command: npm run dev -- --host
     networks:
       - erp_corp_net
 

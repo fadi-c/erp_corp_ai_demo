@@ -115,3 +115,70 @@ media/
 *.tmp
 *.swp
 *.swo
+# === Node / npm / pnpm / yarn ===
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.pnpm-store/
+
+# === TypeScript ===
+*.tsbuildinfo
+dist/
+build/
+out/
+lib/
+
+# === Logs ===
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === Env / Secrets ===
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vscode/settings.json
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# === System files ===
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# === Coverage / Tests ===
+coverage/
+*.lcov
+nyc_output/
+
+# === Temporary files / Cache ===
+*.tmp
+*.temp
+.cache/
+*.bak
+*.old
+*.orig
+
+# === Jest / Vitest ===
+jest.config.js
+jest.setup.js
+vitest.config.ts
+
+# === Build / Bundler outputs ===
+.esbuild/
+.rollup.cache
+.next/
+out/
+dist/
+.node_modules/
