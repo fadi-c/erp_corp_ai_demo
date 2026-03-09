@@ -54,8 +54,8 @@ TEMPLATES = [
         },
     },
 ]
-
 ROOT_URLCONF = "core.urls"
+
 
 # Base de données
 DATABASES = {
