@@ -4,7 +4,11 @@ import ChatBubble from "../components/ChatBubble"
 import { ArrowUp, Loader2 } from "lucide-react"
 import { motion } from "framer-motion"
 
-type Message = { role: "user" | "assistant"; content: string }
+type Message = {
+  role: "user" | "assistant"
+  content: string
+  isLoading?: boolean
+}
 
 export default function PromptPage() {
   const [messages, setMessages] = useState<Message[]>([])
@@ -21,17 +25,34 @@ export default function PromptPage() {
     setMessages((m) => [...m, { role: "user", content: question }])
     setInput("")
 
+    
+    setMessages((m) => [...m, { role: "assistant", content: "", isLoading: true }])
+
     try {
       const res = await askMutation.mutateAsync({ question })
-      setMessages((m) => [
-        ...m,
-        { role: "assistant", content: res.answer }
-      ])
+
+      
+      setMessages((m) => {
+        const newMessages = [...m]
+        const lastIndex = newMessages.findIndex(
+          (msg) => msg.role === "assistant" && msg.isLoading
+        )
+        if (lastIndex !== -1) {
+          newMessages[lastIndex] = { role: "assistant", content: res.answer }
+        }
+        return newMessages
+      })
     } catch {
-      setMessages((m) => [
-        ...m,
-        { role: "assistant", content: "Error contacting ERP AI." }
-      ])
+      setMessages((m) => {
+        const newMessages = [...m]
+        const lastIndex = newMessages.findIndex(
+          (msg) => msg.role === "assistant" && msg.isLoading
+        )
+        if (lastIndex !== -1) {
+          newMessages[lastIndex] = { role: "assistant", content: "Error contacting ERP AI." }
+        }
+        return newMessages
+      })
     }
   }
 
@@ -71,10 +92,9 @@ export default function PromptPage() {
       </div>
 
       {/* Input */}
-      <div className=" p-6">
+      <div className="p-6">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-3 rounded-3xl px-4 py-3 shadow-sm">
-
             <textarea
               ref={textareaRef}
               rows={1}
@@ -88,21 +108,21 @@ export default function PromptPage() {
               }}
               placeholder="Ask ERP AI..."
               className="
-    flex-1
-    min-h-[48px]
-    max-h-[160px]
-    resize-none
-    px-4
-    py-3
-    rounded-3xl
-    bg-[#121a2b]
-    text-white
-    placeholder:text-[#9aa4b2]
-    placeholder:opacity-70
-    outline-none
-    text-base
-    leading-relaxed
-  "
+                flex-1
+                min-h-[48px]
+                max-h-[160px]
+                resize-none
+                px-4
+                py-3
+                rounded-3xl
+                bg-[#121a2b]
+                text-white
+                placeholder:text-[#9aa4b2]
+                placeholder:opacity-70
+                outline-none
+                text-base
+                leading-relaxed
+              "
               style={{
                 color: "white",
                 WebkitTextFillColor: "white"
@@ -113,19 +133,19 @@ export default function PromptPage() {
               onClick={ask}
               disabled={askMutation.isPending || !input.trim()}
               className={`
-    chat-send-button
-    flex items-center justify-center w-12 h-12 rounded-full
-    bg-indigo-600          /* flat et visible */
-    text-white
-    border border-gray-700  /* fine et élégante */
-    shadow-md
-    transition-all duration-150 ease-in-out
-    hover:bg-indigo-500
-    hover:scale-105
-    hover:shadow-lg
-    disabled:opacity-50
-    disabled:cursor-not-allowed
-  `}
+                chat-send-button
+                flex items-center justify-center w-12 h-12 rounded-full
+                bg-indigo-600
+                text-white
+                border border-gray-700
+                shadow-md
+                transition-all duration-150 ease-in-out
+                hover:bg-indigo-500
+                hover:scale-105
+                hover:shadow-lg
+                disabled:opacity-50
+                disabled:cursor-not-allowed
+              `}
             >
               {askMutation.isPending ? (
                 <Loader2 className="animate-spin text-white" size={24} />

@@ -8,7 +8,7 @@ type NavItem = {
   to: string
   label: string
   icon: React.ComponentType<{ size?: number }>
-  tooltip?: string
+  credentials?: string
   external?: boolean
 }
 
@@ -16,10 +16,10 @@ export default function DashboardLayout() {
   const location = useLocation()
 
   const nav: NavItem[] = [
+    { to: EXTERNAL_GITHUB, label: "GitHub", icon: Github, external: true },
     { to: "/", label: "Chat with AI", icon: MessageSquare },
     { to: "/metrics", label: "ERP Datas", icon: BarChart3 },
-    { to: EXTERNAL_GRAFANA, label: "Grafana", icon: ExternalLink, tooltip: "user: demo / pass: demo", external: true },
-    { to: EXTERNAL_GITHUB, label: "GitHub", icon: Github, external: true }
+    { to: EXTERNAL_GRAFANA, label: "Grafana", icon: ExternalLink, credentials: "user: demo  pass: demo", external: true },
   ]
 
   return (
@@ -36,11 +36,15 @@ export default function DashboardLayout() {
                 href={item.to}
                 target="_blank"
                 rel="noopener noreferrer"
-                title={item.tooltip} // ← ici on affiche les creds
-                className="flex items-center gap-4 pl-4 pr-6 py-4 rounded-3xl transition-all duration-200 hover:bg-[#121a2b] hover:text-indigo-400"
+                className="flex flex-col items-start gap-1 pl-4 pr-6 py-3 rounded-3xl transition-all duration-200 hover:bg-[#121a2b] hover:text-indigo-400"
               >
-                <Icon size={22} className="text-indigo-300 transition-colors" />
-                <span className="font-medium text-indigo-200">{item.label}</span>
+                <div className="flex items-center gap-3">
+                  <Icon size={22} className="text-indigo-300 transition-colors" />
+                  <span className="font-medium text-indigo-200">{item.label}</span>
+                </div>
+                {item.credentials && (
+                  <span className="text-xs text-indigo-400 ml-9">{item.credentials}</span>
+                )}
               </a>
             ) : (
               <Link

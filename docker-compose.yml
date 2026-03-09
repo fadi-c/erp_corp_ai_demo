@@ -105,9 +105,9 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL="http://localhost:8000/api"
-      - VITE_GRAFANA_URL="http://localhost:3000/"
-      - VITE_GITHUB_URL="https://github.com"
+      - VITE_API_URL=http://localhost:8000/api
+      - VITE_GRAFANA_URL=http://localhost:3000/
+      - VITE_GITHUB_URL=https://github.com
     command: npm run dev -- --host
     networks:
       - erp_corp_net
