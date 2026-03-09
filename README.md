@@ -59,7 +59,6 @@ flowchart TD
 11. [Data Seeding](#data-seeding)
 12. [Vector Search Implementation](#vector-search-implementation)
 13. [Scalability & Extensibility](#scalability--extensibility)
-14. [Future Improvements](#future-improvements)
 
 ---
 
