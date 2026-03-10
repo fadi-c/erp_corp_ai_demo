@@ -5,7 +5,7 @@ from erp.services import InvoiceService
 from erp.models import Invoice
 from .schemas import InvoiceSchema
 from analysis.services import AnalysisService
-from observability.metrics import api_requests, api_latency, missing_invoice_embeddings
+from observability.metrics import api_requests, api_latency
 import time
 
 router = Router()

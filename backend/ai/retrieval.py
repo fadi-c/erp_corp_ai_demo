@@ -8,7 +8,7 @@ from erp.models import Order, Product
 class RetrievalService:
 
     @staticmethod
-    def search(question: str, limit: int = 30) -> List[InvoiceEmbedding]:
+    def search(question: str, limit: int = 100000) -> List[InvoiceEmbedding]:
 
         question_embedding = EmbeddingFactory.get_embedding_service().generate(question)
         orders_prefetch = Prefetch(

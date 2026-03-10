@@ -49,11 +49,11 @@ export default function MetricsPage() {
 
   return (
     <div className="p-6 md:p-10 bg-[#0f172a] min-h-screen text-white">
-            <div className="text-center mt-40" style={{paddingTop:20}}>
-              <h1 className="text-4xl font-semibold mb-3 text-white">
-                Invoices
-              </h1>
-            </div>   
+      <div className="text-center mt-40" style={{ paddingTop: 20 }}>
+        <h1 className="text-4xl font-semibold mb-3 text-white">
+          Invoices
+        </h1>
+      </div>
 
       {isLoading ? (
         <div className="p-6 text-[#9aa4b2]">Loading invoices...</div>
@@ -70,9 +70,13 @@ export default function MetricsPage() {
                   <th className="px-6 py-3 text-right text-sm font-semibold text-[#9aa4b2]">Margin (€)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#243047] bg-[#0f172a]">
-                {data.map((invoice) => (
-                  <tr key={invoice.id} className="hover:bg-[#121a2b] transition-colors">
+              <tbody className="divide-y divide-[#243047]">
+                {data.map((invoice, index) => (
+                  <tr
+                    key={invoice.id}
+                    className={`hover:bg-[#121a2b] transition-colors ${index % 2 === 0 ? "bg-[#0f172a]" : "bg-[#1a223b]"
+                      }`}
+                  >
                     <td className="px-6 py-4 text-sm">{invoice.id}</td>
                     <td className="px-6 py-4 text-sm">{invoice.date}</td>
                     <td className="px-6 py-4 text-sm">{invoice.description ?? invoice.customer}</td>

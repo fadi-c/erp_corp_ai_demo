@@ -6,8 +6,8 @@ from django.conf import settings
 
 class LocalEmbedding(BaseEmbedding):
     SERVICE_URL = os.getenv("LOCAL_EMBEDDING_URL", "http://localhost:5000/embed")
-    MODEL_DIM = 1536  
 
+    MODEL_DIM = 1536 #384
     def generate(self, text: str) -> Vector:
         try:
             resp = requests.post(
@@ -20,10 +20,12 @@ class LocalEmbedding(BaseEmbedding):
             embedding = data["embedding"]
 
             if len(embedding) != self.MODEL_DIM:
-                embedding = (embedding * (self.MODEL_DIM // len(embedding) + 1))[:self.MODEL_DIM]
+                raise ValueError(
+                    f"Embedding dimension mismatch: got {len(embedding)}, expected {self.MODEL_DIM}"
+                )
 
             return Vector(embedding)
+
         except Exception as e:
-            print(f"[LocalEmbedding] failed, fallback to DevEmbedding: {e}")
-            from .dev_client import DevEmbedding
-            return DevEmbedding().generate(text)
+            print(f"[generate] Error generating embedding: {e}")
+            raise

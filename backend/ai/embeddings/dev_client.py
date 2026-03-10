@@ -3,7 +3,6 @@ from .base import BaseEmbedding
 
 class DevEmbedding(BaseEmbedding):
     MODEL_DIM = 1536
-
     def generate(self, text: str) -> Vector:
         import hashlib
 

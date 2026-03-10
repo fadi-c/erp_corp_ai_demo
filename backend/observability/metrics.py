@@ -1,13 +1,5 @@
-import os
-import shutil
+
 from prometheus_client import Counter, Gauge, Histogram
-
-PROM_DIR = os.environ.get("PROMETHEUS_MULTIPROC_DIR", "/tmp/prometheus")
-
-if os.path.exists(PROM_DIR):
-    shutil.rmtree(PROM_DIR)
-
-os.makedirs(PROM_DIR, exist_ok=True)
 
 
 # API Metrics

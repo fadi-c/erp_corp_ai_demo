@@ -84,15 +84,6 @@ services:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
 
-  embedding:
-    build:
-      context: .
-      dockerfile: local_embedding/Dockerfile
-    expose:
-      - 5000
-    networks:
-      - erp_corp_net
-
   frontend:
     build:
       context: .
@@ -109,6 +100,19 @@ services:
     command: npm run dev -- --host
     networks:
       - erp_corp_net
+  embedding:
+    build:
+      context: .
+      dockerfile: local_embedding/Dockerfile
+    expose:
+      - "5000"
+    networks:
+      - erp_corp_net
+    volumes:
+      - MiniLM:/app/models
+
+  volumes:
+    MiniLM:
 
 networks:
   erp_corp_net:

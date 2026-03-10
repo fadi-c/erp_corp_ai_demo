@@ -14,7 +14,7 @@ class GroqLLM(BaseLLM):
 
     def ask(self, question: str, context: str) -> str:
         prompt = f"""
-You are an AI analyst helping understand ERP financial data.
+You are a professional AI analyst specialized in ERP and financial data.
 
 Context:
 {context}
@@ -22,7 +22,7 @@ Context:
 Question:
 {question}
 
-Provide a concise explanation.
+Analyze the data carefully and provide a clear, concise, and actionable explanation suitable for business decisions. 
 """
 
         response = client.chat.completions.create(
