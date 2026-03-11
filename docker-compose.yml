@@ -109,7 +109,7 @@ services:
     networks:
       - erp_corp_net
     volumes:
-      - hf_cache:/root/.cache/huggingface
+      - hf_cache:/app/models
 
 volumes:
     hf_cache:
