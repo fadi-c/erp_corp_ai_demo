@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5432:5432"
+      - "5432"
     networks:
       - erp_corp_net
 
@@ -44,7 +44,7 @@ services:
     networks:
       - erp_corp_net
     ports:
-      - "5555:5555" 
+      - "5555" 
 
   celery-beat:
     build:
@@ -61,14 +61,14 @@ services:
     networks:
       - erp_corp_net
     ports:
-      - "5556:5556"
+      - "5556"
 
   prometheus:
     image: prom/prometheus
     volumes:
       - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
-      - "9090:9090"
+      - "9090"
     networks:
       - erp_corp_net
 
@@ -93,10 +93,8 @@ services:
       - ./.node_modules:/home/node/.node_modules
     ports:
       - "5173:5173"
-    environment:
-      - VITE_API_URL=http://localhost:8000/api
-      - VITE_GRAFANA_URL=http://localhost:3000/
-      - VITE_GITHUB_URL=https://github.com/fadi-c/erp_corp_ai_demo
+    env_file:
+      - .env
     command: npm run dev -- --host
     networks:
       - erp_corp_net
@@ -106,13 +104,15 @@ services:
       dockerfile: local_embedding/Dockerfile
     expose:
       - "5000"
+    env_file:
+      - .env
     networks:
       - erp_corp_net
     volumes:
-      - MiniLM:/app/models
+      - hf_cache:/root/.cache/huggingface
 
-  volumes:
-    MiniLM:
+volumes:
+    hf_cache:
 
 networks:
   erp_corp_net:

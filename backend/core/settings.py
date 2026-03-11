@@ -1,16 +1,14 @@
 import os
 from pathlib import Path
 
-#BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ["192.168.11.114", "localhost", "127.0.0.1", "*"]
+ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "localhost").split(",")]
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    #"django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -23,22 +21,22 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "api.middleware.LogIPMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",    
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'django_prometheus.middleware.PrometheusAfterMiddleware',    
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Vite dev server
-]
-# CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [h.strip() for h in os.getenv("CORS_ALLOWED_ORIGINS").split(",")]
+CORS_ALLOW_CREDENTIALS = os.getenv("CORS_ALLOW_CREDENTIALS", "False") == "True"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -54,10 +52,11 @@ TEMPLATES = [
         },
     },
 ]
+
 ROOT_URLCONF = "core.urls"
 
 
-# Base de données
+# DATABASE
 DATABASES = {
     "default": {
         "ENGINE": "django_prometheus.db.backends.postgresql",
@@ -69,17 +68,56 @@ DATABASES = {
     }
 }
 
-# Static files
+
+# STATIC FILES
 STATIC_URL = "/static/"
 
-# Celery
+
+# CELERY
 CELERY_BROKER_URL = os.getenv("REDIS_URL")
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 
-# Default primary key
+
+# DEFAULT PK
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# LLM factory 
+
+# LLM FACTORY
 AI_LLM = os.getenv("AI_LLM", "FAKE")
 AI_EMBEDDINGS = os.getenv("AI_EMBEDDINGS", "FAKE")
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+
+    "formatters": {
+        "verbose": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+        },
+        "ip": {
+            "format": "%(asctime)s %(message)s"
+        },
+    },
+
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "ip",
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "django_requests.log",
+            "formatter": "verbose",
+        },
+    },
+
+    "loggers": {
+        "django.request": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+}

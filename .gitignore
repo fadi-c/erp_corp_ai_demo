@@ -183,3 +183,4 @@ out/
 dist/
 .node_modules/
 .local_embedding/
+hf_cache/
