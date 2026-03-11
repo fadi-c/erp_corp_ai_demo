@@ -22,7 +22,7 @@ COPY local_embedding/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-RUN mkdir -p /root/.cache/huggingface
+#RUN mkdir -p /root/.cache/huggingface
 
 
 COPY local_embedding/embedding_service.py /app
